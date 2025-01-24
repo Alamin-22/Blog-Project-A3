@@ -20,7 +20,7 @@ app.use(cors({ origin: ["http://localhost:3000"] }));
 // app.use("/api/v1", router); // handling routers from separate func
 
 const Test = (req: Request, res: Response) => {
-  res.send("BU Server Is Running");
+  res.send("Blog Server Is Running");
 };
 
 app.get("/", Test);
