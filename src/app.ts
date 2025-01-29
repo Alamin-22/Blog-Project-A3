@@ -1,33 +1,20 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import express from "express";
+import cors from "cors";
 
-import express, { Application, Request, Response } from 'express';
-const app: Application = express();
-import cors from 'cors';
-// import globalErrorHandler from "./app/middlewares/globalErrorHandler";
-// import notFound from "./app/middlewares/notFound";
-// import router from "./app/routers";
-import cookieParser from 'cookie-parser';
-// parser
-const mollik = 'asd';
+const app = express();
+
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:3000'] }));
 
-//Application Routes
-// app.use("/api/v1", router); // handling routers from separate func
+// Application routes
 
-const Test = (req: Request, res: Response) => {
-  res.send('Blog Server Is Running');
-};
+// for Products Routs
+// app.use("/api/products", productsRoutes);
 
-app.get('/', Test);
-
-// handling error
-
-// app.use(globalErrorHandler as any);
-// app.use(notFound as any);
+// Health Check
+app.get("/", (req, res) => {
+  res.send("StorySync Server is running");
+});
 
 export default app;
