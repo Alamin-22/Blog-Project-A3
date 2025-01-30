@@ -1,35 +1,24 @@
-// eslint.config.mjs
-import eslint from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import prettierConfig from 'eslint-config-prettier';
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
+/** @type {import('eslint').Linter.Config[]} */
 export default [
-  eslint.configs.recommended,
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
+  { languageOptions: { globals: globals.node } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    files: ['**/*.ts'],
-    languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 2022,
-      sourceType: 'module',
-      globals: {
-        node: true,
-        es2022: true,
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-    },
+    ignores: ['node_modules', 'dist'],
     rules: {
-      ...tsPlugin.configs.recommended.rules,
-      'no-console': 'warn',
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error'],
-      'no-extra-semi': 'error',
+      'no-unused-vars': 'error',
+      'no-unused-expressions': 'error',
       'prefer-const': 'error',
-      quotes: ['error', 'single'],
-      semi: ['error', 'always'],
+      // 'no-console': 'warn',
+      'no-undef': 'error',
     },
+    // globals: {
+    //   process: 'readonly',
+    // },
   },
-  prettierConfig,
 ];

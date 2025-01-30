@@ -1,12 +1,9 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
 
 const app = express();
 
-const mollik = 'mollik';
-
-
-console.log(object);
+const mollik = "mollik";
 
 
 // Middleware
@@ -19,8 +16,8 @@ app.use(express.json());
 // app.use("/api/products", productsRoutes);
 
 // Health Check
-app.get('/', (req, res) => {
-  res.send('StorySync Server is running');
+app.get("/", (req, res) => {
+  res.send("StorySync Server is running");
 });
 
 export default app;
