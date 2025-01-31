@@ -4,13 +4,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
-import config from '../config';
+
+// import handleZodError from '../errors/handleZodError';
 import handleZodError from '../errors/handleZodError';
 import handleCastError from '../errors/handleCastError';
 import AppError from '../errors/AppError';
 import { TErrorSources } from '../interface/error';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import handleValidationError from '../errors/handleValidationError';
+import config from '../config';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
