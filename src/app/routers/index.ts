@@ -1,14 +1,15 @@
-import { Router } from "express";
+import { Router } from 'express';
+import { userCreationRoutes } from '../modules/UserCreation/userCreation.route';
 
 const router = Router();
 
-// const moduleRouters = [
-// //   {
-// //     path: "/admins",
-// //     route: AdminRoutes,
-// //   },
-// ];
+const moduleRoutes = [
+  {
+    path: '/users',
+    route: userCreationRoutes,
+  },
+];
 
-// moduleRouters.forEach((router) => router.use(router.push, router.route));
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
 
-// export default router;
+export default router;
