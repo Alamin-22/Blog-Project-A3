@@ -6,11 +6,11 @@ import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
 import config from '../config';
 import handleZodError from '../errors/handleZodError';
-import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
-import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/AppError';
 import { TErrorSources } from '../interface/error';
+import handleDuplicateError from '../errors/handleDuplicateError';
+import handleValidationError from '../errors/handleValidationError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;

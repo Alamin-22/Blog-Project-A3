@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express from 'express';
 import cors from 'cors';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import notFound from './app/middlewares/notFound';
 
 const app = express();
 
@@ -16,5 +19,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('StorySync Server is running');
 });
+
+// handling error
+
+app.use(globalErrorHandler as any);
+app.use(notFound as any);
 
 export default app;
