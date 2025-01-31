@@ -7,6 +7,7 @@ import { userCreationServices } from './userCreation.service';
 const createUser: RequestHandler = catchAsync(async (req, res) => {
   const { password, userData } = req.body;
   // calling service to create user
+  console.log("Call is making");
 
   const result = await userCreationServices.createUserIntoDB(
     password,
