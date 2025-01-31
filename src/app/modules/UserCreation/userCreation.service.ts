@@ -5,9 +5,14 @@ import { UserModel } from './userCreation.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
-const createUserIntoDB = async (password: string, payload) => {
+const createUserIntoDB = async (password: string, payload: any) => {
   const userData: Partial<TUser> = {};
 
+  console.log(
+    'This response is coming form the userCreation file line 12',
+    { password },
+    { payload },
+  );
   //   setting the User Role and password
   userData.role = 'user';
   userData.password = password;
