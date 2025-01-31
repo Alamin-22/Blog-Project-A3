@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+import { Model } from 'mongoose';
+import { USER_ROLE } from './userCreation.constant';
+
 export interface TUser {
   name: string;
   email: string;
@@ -5,3 +9,18 @@ export interface TUser {
   role: 'admin' | 'user';
   isBlocked: boolean;
 }
+
+export interface TUserModel extends Model<TUser> {
+
+  isPasswordMatched(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean>;
+
+  isJWTIssuedBeforePasswordChanged(
+    passwordChangedTimeStamp: Date,
+    JwtIssuedTimeStamp: number,
+  ): boolean;
+}
+
+export type TUserRole = keyof typeof USER_ROLE;
