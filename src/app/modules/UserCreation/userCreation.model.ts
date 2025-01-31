@@ -37,8 +37,8 @@ const x= "mollik"
 
 //  to hassing password before save into DB using pre hook
 
-userSchema.pre('save', async function (next) {
-  const user = this; // (this) refers to the user Data 
+// userSchema.pre('save', async function (next) {
+//   const user = this; // (this) refers to the user Data 
 
-  user.password = await 
-});
+//   user.password = await 
+// });
