@@ -56,6 +56,7 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
+// checking password for authentication
 userSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword,
