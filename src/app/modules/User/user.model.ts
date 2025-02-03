@@ -23,9 +23,7 @@ const UserSchema = new Schema<TUserType>(
     },
   },
   {
-    toJSON: {
-      virtuals: true, /// Enabling  virtuals to use on the Client
-    },
+    timestamps: true,
   },
 );
 

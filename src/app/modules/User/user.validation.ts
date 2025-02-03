@@ -1,30 +1,22 @@
 import { z } from 'zod';
 
-const createUserValidationSchema = z.object({
-  body: z.object({
-    password: z.string().max(20),
-    user: z.object({
-      name: z.string(),
-      email: z.string().email(),
-      role: z.enum(['admin', 'user']).default('user'),
-      isBlocked: z.boolean().default(false),
-    }),
-  }),
+const createUserSchema = z.object({
+  name: z.string().nonempty({ message: 'Name is required' }),
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(1, { message: 'Password is required' }),
+  isBlocked: z.boolean().optional().default(false),
 });
 
-const updateUserValidationSchema = z.object({
-  body: z.object({
-    password: z.string().max(20).optional(),
-    user: z.object({
-      name: z.string().optional(),
-      email: z.string().email().optional(),
-      role: z.enum(['admin', 'user']).default('user').optional(),
-      isBlocked: z.boolean().default(false).optional(),
-    }),
-  }),
+const updateUserSchema = z.object({
+  name: z.string().nonempty({ message: 'Name cannot be empty' }).optional(),
+  email: z.string().email({ message: 'Invalid email address' }).optional(),
+  password: z
+    .string()
+    .min(1, { message: 'Password cannot be empty' })
+    .optional(),
+  isBlocked: z.boolean().optional(),
 });
-
-export const StudentValidations = {
-  createUserValidationSchema,
-  updateUserValidationSchema,
+export const userValidations = {
+  createUserSchema,
+  updateUserSchema,
 };
