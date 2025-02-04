@@ -7,7 +7,6 @@ const UserSchema = new Schema<TUserType>(
       type: String,
       required: true,
     },
-
     email: {
       type: String,
       required: true,
