@@ -1,11 +1,43 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { UserModel } from '../User/user.model';
-import { TLoginUser } from './auth.interface';
+import { TLoginUser, TRegisterUser } from './auth.interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
+import mongoose from 'mongoose';
+
+const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
+  // Merge the default role into payload
+  const userData: TRegisterUser = {
+    ...payload,
+    role: 'user', // default role assignment
+  };
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    // create a user (transaction 1)
+    const newUser = await UserModel.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed To Create User');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newUser;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
@@ -184,6 +216,7 @@ const refreshToken = async (token: string) => {
 
 export const AuthServices = {
   loginUser,
+  createUserIntoDB,
   changePassword,
   refreshToken,
 };

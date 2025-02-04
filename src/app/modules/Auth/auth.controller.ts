@@ -10,7 +10,7 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 
   console.log('this is coming from 11', req.body);
 
-  const result = await userServices.createUserIntoDB(password, userData);
+  const result = await AuthServices.createUserIntoDB(password, userData);
 
   // passing the response to the Reusable func
   sendResponse(res, {
