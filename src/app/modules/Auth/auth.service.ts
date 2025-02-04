@@ -21,7 +21,6 @@ const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
   // Check if a user with the given email already exists
   const existingUser = await UserModel.findOne({ email: payload.email });
   if (existingUser) {
-    // Throwing an error with a status code if the user exists
     throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
   }
 

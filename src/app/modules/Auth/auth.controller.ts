@@ -8,7 +8,6 @@ import { RequestHandler } from 'express';
 const createUser: RequestHandler = catchAsync(async (req, res) => {
   const { password, user: userData } = req.body;
 
-  console.log('this is coming from 11', req.body);
 
   const result = await AuthServices.createUserIntoDB(password, userData);
 

@@ -3,7 +3,7 @@ import { z } from 'zod';
 const createUserValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20).min(4, { message: 'Password is required' }),
-    student: z.object({
+    user: z.object({
       name: z.string().nonempty({ message: 'Name is required' }),
       email: z.string().email({ message: 'Invalid email address' }),
       isBlocked: z.boolean().optional().default(false),
