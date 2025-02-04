@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(cors({ origin: ['http://localhost:3000'] }));
 
 // Application routes
-app.use('/api/v1', router); // handling routers from separate func
+app.use('/api', router); // handling routers from separate func
 
 // Health Check
 app.get('/', (req: Request, res: Response) => {

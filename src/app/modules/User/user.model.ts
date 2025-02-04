@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { TUserType } from './user.interface';
+import { TRegisterUser } from '../Auth/auth.interface';
 
-const UserSchema = new Schema<TUserType>(
+const UserSchema = new Schema<TRegisterUser>(
   {
     name: {
       type: String,
@@ -26,4 +26,4 @@ const UserSchema = new Schema<TUserType>(
   },
 );
 
-export const UserModel = model<TUserType>('user', UserSchema);
+export const UserModel = model<TRegisterUser>('user', UserSchema);

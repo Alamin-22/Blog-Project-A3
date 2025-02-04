@@ -7,36 +7,24 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
-import mongoose from 'mongoose';
 
 const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
-  // Merge the default role into payload
-  const userData: TRegisterUser = {
-    ...payload,
-    role: 'user', // default role assignment
-  };
+  const userData: Partial<TRegisterUser> = {};
 
-  const session = await mongoose.startSession();
+  // have to set Student Role
+  userData.role = 'user';
+  userData.password = password;
 
-  try {
-    session.startTransaction();
+  const existingUser = await UserModel.findOne({ email: payload.email });
 
-    // create a user (transaction 1)
-    const newUser = await UserModel.create([userData], { session });
-
-    if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed To Create User');
-    }
-
-    await session.commitTransaction();
-    await session.endSession();
-
-    return newUser;
-  } catch (err: any) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw new Error(err);
+  if (existingUser) {
+    throw {
+      statusCode: httpStatus.BAD_REQUEST,
+      message: 'User already exists',
+    };
   }
+  const user = await UserModel.create(payload);
+  return user;
 };
 
 const loginUser = async (payload: TLoginUser) => {
