@@ -7,7 +7,11 @@ import { USER_ROLE } from './auth.constant';
 
 const router = express.Router();
 
-router.post('/register', AuthControllers.changePassword);
+router.post(
+  '/register',
+  // ValidateRequestMiddleWare(AuthValidations.createUserValidationSchema),
+  AuthControllers.createUser,
+);
 
 router.post(
   '/login',

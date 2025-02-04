@@ -9,21 +9,24 @@ import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
 
 const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
-  const userData: Partial<TRegisterUser> = {};
+  // Merge the incoming payload with the required properties
+  const userData: TRegisterUser = {
+    ...payload,
+    password,
+    role: 'user',
+  };
 
-  // have to set Student Role
-  userData.role = 'user';
-  userData.password = password;
+  console.log('Creating user with data:', userData);
 
+  // Check if a user with the given email already exists
   const existingUser = await UserModel.findOne({ email: payload.email });
-
   if (existingUser) {
-    throw {
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'User already exists',
-    };
+    // Throwing an error with a status code if the user exists
+    throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
   }
-  const user = await UserModel.create(payload);
+
+  // Create the user with the merged data
+  const user = await UserModel.create(userData);
   return user;
 };
 
