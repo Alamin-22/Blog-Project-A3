@@ -14,12 +14,15 @@ const createUserIntoDB = async (payload: TRegisterUser) => {
   // Check if a user with the given email already exists
   const existingUser = await UserModel.findOne({ email: payload.email });
   if (existingUser) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
+    throw new AppError(409, 'User already exists');
   }
 
   // Create the user with the merged data
   const createdUser = await UserModel.create(payload);
 
+  if (!createdUser) {
+    throw new AppError(500, 'User creation failed. Try again later.');
+  }
 
   return createdUser;
 };
