@@ -3,17 +3,7 @@ import { userSearchableField } from './user.constant';
 import { UserModel } from './user.model';
 
 const getAllUserFromDB = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(
-    UserModel.find()
-      .populate('admissionSemester')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicFaculty',
-        },
-      }),
-    query,
-  )
+  const userQuery = new QueryBuilder(UserModel.find(), query)
     .search(userSearchableField)
     .filter()
     .sort()
