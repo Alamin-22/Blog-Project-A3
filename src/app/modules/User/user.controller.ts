@@ -4,16 +4,29 @@ import { userServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
-// we are moving out our try catch logic to this func=> this is called higher order func
 const getAllUser: RequestHandler = catchAsync(async (req, res) => {
   const result = await userServices.getAllUserFromDB(req.query);
   // passing to the reusable func
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'user retrieve Successfully',
+    message: 'All User retrieve Successfully',
     data: result,
   });
 });
 
-export const userControllers = { getAllUser };
+const getSingleUser: RequestHandler = catchAsync(async (req, res) => {
+  const userId = req.params.id;
+
+  const result = await userServices.getSingleUserFromDB(userId);
+
+  // passing to the reusable func
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User retrieve Successfully',
+    data: result,
+  });
+});
+
+export const userControllers = { getAllUser, getSingleUser };

@@ -4,6 +4,7 @@ import { userControllers } from './user.controller';
 const router = express.Router();
 
 router.get('/', userControllers.getAllUser);
+router.get('/:id', userControllers.getSingleUser);
 
 // router.get('/:id', studentControllers.getSingleStudent);
 // // to delete student
