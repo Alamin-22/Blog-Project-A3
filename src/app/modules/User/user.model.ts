@@ -33,12 +33,9 @@ const UserSchema = new Schema<TRegisterUser>(
     timestamps: true,
     toJSON: {
       transform(doc, ret) {
-        // Selecting those filed which I have to return
-        return {
-          _id: ret._id,
-          name: ret.name,
-          email: ret.email,
-        };
+        // Exclude password but return all other fields
+        delete ret.password;
+        return ret;
       },
     },
   },

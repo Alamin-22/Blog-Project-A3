@@ -24,7 +24,11 @@ const createUserIntoDB = async (payload: TRegisterUser) => {
     throw new AppError(500, 'User creation failed. Try again later.');
   }
 
-  return createdUser;
+  return {
+    _id: createdUser._id,
+    name: createdUser.name,
+    email: createdUser.email,
+  };
 };
 
 const loginUser = async (payload: TLoginUser) => {
