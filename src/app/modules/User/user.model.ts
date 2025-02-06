@@ -14,6 +14,12 @@ const UserSchema = new Schema<TRegisterUser>(
       required: true,
       unique: true,
     },
+    role: {
+      type: String,
+      enum: ['admin', 'user'], // Use enum for strict type adherence
+      required: true,
+      default: 'user',
+    },
     isBlocked: {
       type: Boolean,
       default: false,
@@ -25,6 +31,16 @@ const UserSchema = new Schema<TRegisterUser>(
   },
   {
     timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        // Selecting those filed which I have to return
+        return {
+          _id: ret._id,
+          name: ret.name,
+          email: ret.email,
+        };
+      },
+    },
   },
 );
 

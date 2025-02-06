@@ -8,15 +8,8 @@ import config from '../../config';
 import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
 
-const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
-  // Merge the incoming payload with the required properties
-  const userData: TRegisterUser = {
-    ...payload,
-    password,
-    role: 'user',
-  };
-
-  console.log('Creating user with data:', userData);
+const createUserIntoDB = async (payload: TRegisterUser) => {
+  console.log('Creating user with data:', payload);
 
   // Check if a user with the given email already exists
   const existingUser = await UserModel.findOne({ email: payload.email });
@@ -25,8 +18,10 @@ const createUserIntoDB = async (password: string, payload: TRegisterUser) => {
   }
 
   // Create the user with the merged data
-  const user = await UserModel.create(userData);
-  return user;
+  const createdUser = await UserModel.create(payload);
+
+
+  return createdUser;
 };
 
 const loginUser = async (payload: TLoginUser) => {

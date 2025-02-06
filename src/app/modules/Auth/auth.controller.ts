@@ -6,14 +6,13 @@ import config from '../../config';
 import { RequestHandler } from 'express';
 
 const createUser: RequestHandler = catchAsync(async (req, res) => {
-  const { password, user: userData } = req.body;
+  const userData = req.body;
 
-
-  const result = await AuthServices.createUserIntoDB(password, userData);
+  const result = await AuthServices.createUserIntoDB(userData);
 
   // passing the response to the Reusable func
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 201,
     success: true,
     message: 'User Created Successfully',
     data: result,
