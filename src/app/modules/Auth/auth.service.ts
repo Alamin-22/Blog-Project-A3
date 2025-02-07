@@ -11,8 +11,6 @@ const accessExpiresIn = Number(config.jwt_access_expire_In); // e.g., 86400
 const refreshExpiresIn = Number(config.jwt_refresh_expire_In); // e.g., 604800
 //
 const createUserIntoDB = async (payload: TRegisterUser) => {
-  console.log('Creating user with data:', payload);
-
   // Check if a user with the given email already exists
   const existingUser = await UserModel.findOne({ email: payload.email });
   if (existingUser) {
