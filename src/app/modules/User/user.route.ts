@@ -16,4 +16,4 @@ router.get('/:id', userControllers.getSingleUser);
 // // update
 // router.delete('/:id', studentControllers.deleteStudent);
 
-export const usersRout = router;
+export const userRoutes = router;

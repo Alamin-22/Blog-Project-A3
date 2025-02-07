@@ -5,15 +5,15 @@ import { RequestHandler } from 'express';
 import { BlogServices } from './blog.service';
 
 const createBlog: RequestHandler = catchAsync(async (req, res) => {
-  const userData = req.body;
+  const BlogData = req.body;
 
-  const result = await BlogServices.createBlogIntoDB(userData);
+  const result = await BlogServices.createBlogIntoDB(BlogData);
 
   // passing the response to the Reusable func
   sendResponse(res, {
     statusCode: 201,
     success: true,
-    message: 'User Created Successfully',
+    message: 'Blog Created Successfully',
     data: result,
   });
 });
