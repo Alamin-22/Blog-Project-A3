@@ -4,14 +4,18 @@ import { TBlog } from './blog.interface';
 import { BlogModel } from './blog.model';
 
 const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
-  const newBlogData = { ...payload, userId };
+  const newBlogData = { ...payload, author: userId };
 
-  console.log(newBlogData);
-  // const createdBlog = await BlogModel.create(payload);
-  // if (!createdBlog) {
-  //   throw new AppError(500, 'Blog creation failed. Try again later.');
-  // }
-  // return createdBlog;
+  console.log('New Blog Data:', newBlogData);
+
+  // Save the blog in the database
+  const createdBlog = await BlogModel.create(newBlogData);
+
+  if (!createdBlog) {
+    throw new AppError(500, 'Blog creation failed. Try again later.');
+  }
+
+  return createdBlog;
 };
 
 export const BlogServices = {

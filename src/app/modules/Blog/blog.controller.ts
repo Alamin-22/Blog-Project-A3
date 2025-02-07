@@ -5,14 +5,19 @@ import { RequestHandler } from 'express';
 import { BlogServices } from './blog.service';
 
 const createBlog: RequestHandler = catchAsync(async (req, res) => {
-  const BlogData = req.body;
-  const userId = req.cookies;
+  const blogData = req.body;
 
-  console.log('user id is decoded from the cookie', userId);
+  // Extract userId from req.user which is set in AuthValidationMiddleware
+  const userId = req.user?._id;
 
-  const result = await BlogServices.createBlogIntoDB(BlogData, userId);
+  if (!userId) {
+    throw new Error('User ID is missing from token');
+  }
 
-  // passing the response to the Reusable func
+  // Pass blog data and userId to service function
+  const result = await BlogServices.createBlogIntoDB(blogData, userId);
+
+  // Sending response using reusable function
   sendResponse(res, {
     statusCode: 201,
     success: true,
