@@ -6,8 +6,11 @@ import { BlogServices } from './blog.service';
 
 const createBlog: RequestHandler = catchAsync(async (req, res) => {
   const BlogData = req.body;
+  const userId = req.cookies;
 
-  const result = await BlogServices.createBlogIntoDB(BlogData);
+  console.log('user id is decoded from the cookie', userId);
+
+  const result = await BlogServices.createBlogIntoDB(BlogData, userId);
 
   // passing the response to the Reusable func
   sendResponse(res, {
