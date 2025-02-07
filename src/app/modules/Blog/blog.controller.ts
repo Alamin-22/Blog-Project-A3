@@ -30,12 +30,10 @@ const updateBlog: RequestHandler = catchAsync(async (req, res) => {
   const { id: blogId } = req.params;
   const { title, content } = req.body;
 
-  // Extract userId from the decoded JWT token from Authorization header in request
-  const userId = req.user.userId;
+  // Extract userId from the decoded JWT token which is attached to req.user in middleware
+  const userId = req.user?._id;
 
-  console.log('User ID decoded from token:', userId);
-
-  // Pass the blog ID, updated data, and user ID to the Blog service for update
+  // Call the blog service to update the blog.
   const result = await BlogServices.updateBlogIntoDB(
     blogId,
     { title, content },

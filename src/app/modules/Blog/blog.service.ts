@@ -29,33 +29,44 @@ const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
 
 const updateBlogIntoDB = async (
   blogId: string,
-  updatedData: { title: string; content: string },
+  updatedData: { title?: string; content?: string },
   userId: ObjectId,
 ) => {
   // Find the blog by ID
   const blog = await BlogModel.findById(blogId);
-
-  console.log('getting the blog using id', blog);
+  console.log('Found blog:', blog);
 
   if (!blog) {
     throw new AppError(404, 'Blog not found');
   }
 
-  // Check if the logged-in user is the author of the blog
-  if (blog.author._id.toString() !== userId.toString()) {
+  const blogAuthorId =
+    typeof blog.author === 'object' && blog.author._id
+      ? blog.author._id
+      : blog.author;
+
+  // Check if the logged in user is the author of the blog
+  if (blogAuthorId.toString() !== userId.toString()) {
     throw new AppError(403, 'You are not authorized to update this blog');
   }
 
-  // Update the blog with the new title and content
-  blog.title = updatedData.title;
-  blog.content = updatedData.content;
+  // Only update the fields if they are provided in the request.
+  if (updatedData.title !== undefined) {
+    blog.title = updatedData.title;
+  }
+  if (updatedData.content !== undefined) {
+    blog.content = updatedData.content;
+  }
 
-  // Save the updated blog
+  // Save the updated blog document
   const updatedBlog = await blog.save();
-
-  return updatedBlog;
+  return {
+    _id: updatedBlog._id,
+    title: updatedBlog.title,
+    content: updatedBlog.content,
+    author: updatedBlog.author,
+  };
 };
-
 export const BlogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
