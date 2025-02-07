@@ -15,7 +15,9 @@ const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
     throw new AppError(500, 'Blog creation failed. Try again later.');
   }
 
-  return createdBlog;
+  // Populating the author field before returning
+  const populatedBlog = await createdBlog.populate('author', 'name email'); // Populate only selected fields
+  return populatedBlog;
 };
 
 export const BlogServices = {

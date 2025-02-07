@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { model, Schema } from 'mongoose';
 import { TRegisterUser, TUserModel } from '../Auth/auth.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
+//User Schema
 const UserSchema = new Schema<TRegisterUser, TUserModel>(
   {
     name: {
@@ -16,7 +18,7 @@ const UserSchema = new Schema<TRegisterUser, TUserModel>(
     },
     role: {
       type: String,
-      enum: ['admin', 'user'], // Use enum for strict type adherence
+      enum: ['admin', 'user'], // Using enum for strict type adherence
       required: true,
       default: 'user',
     },
@@ -41,27 +43,23 @@ const UserSchema = new Schema<TRegisterUser, TUserModel>(
   },
 );
 
+// Pre-save hook to hash password before saving
 UserSchema.pre('save', async function (next) {
-  // using pre hook to  has a  password and save intoDb
-
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this; // this means currently processing data // this user refers to "doc"
-
+  const user = this; // This refers to the document being saved
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
   );
-
   next();
 });
 
-// set empty string after saving password
+// Post-save hook to clear password after saving
 UserSchema.post('save', function (doc, next) {
-  // after getting the hashed password we wil hide it from DB By Empty String
-  doc.password = '';
+  doc.password = ''; // Hide the password after saving
   next();
 });
 
+// Static method to check password match
 UserSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword,
@@ -69,4 +67,8 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 
-export const UserModel = model<TRegisterUser, TUserModel>('user', UserSchema);
+// Ensure unique email index is created
+UserSchema.index({ email: 1 }, { unique: true });
+
+// Create and export the User model
+export const UserModel = model<TRegisterUser, TUserModel>('User', UserSchema);
