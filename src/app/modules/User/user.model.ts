@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose';
-import { TRegisterUser } from '../Auth/auth.interface';
+import { TRegisterUser, TUserModel } from '../Auth/auth.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
-const UserSchema = new Schema<TRegisterUser>(
+const UserSchema = new Schema<TRegisterUser, TUserModel>(
   {
     name: {
       type: String,
@@ -62,4 +62,11 @@ UserSchema.post('save', function (doc, next) {
   next();
 });
 
-export const UserModel = model<TRegisterUser>('user', UserSchema);
+UserSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword,
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
+export const UserModel = model<TRegisterUser, TUserModel>('user', UserSchema);

@@ -33,24 +33,19 @@ const createUserIntoDB = async (payload: TRegisterUser) => {
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
-  const user = await UserModel.isUserExistByCustomId(payload.id);
+  const user = await UserModel.findOne({ email: payload.email });
+
+  console.log('retrieve specific user', user);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
-  // checking if the user is already deleted
-
-  const isDeleted = user?.isDeleted;
-
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
-  }
 
   // checking if the user is blocked
 
-  const userStatus = user?.status;
+  const userStatus = user?.isBlocked;
 
-  if (userStatus === 'blocked') {
+  if (userStatus) {
     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
   }
 
@@ -83,7 +78,6 @@ const loginUser = async (payload: TLoginUser) => {
   );
 
   return {
-    needsPasswordChange: user?.needsPasswordChange,
     accessToken,
     refreshToken,
   };
