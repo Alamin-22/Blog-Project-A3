@@ -2,6 +2,8 @@ import { ObjectId } from 'mongoose';
 import AppError from '../../errors/AppError';
 import { TBlog } from './blog.interface';
 import { BlogModel } from './blog.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { blogSearchableField } from './blog.constant';
 
 const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
   const newBlogData = { ...payload, author: userId };
@@ -25,6 +27,18 @@ const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
     content: populatedBlog.content,
     author: populatedBlog.author,
   };
+};
+
+const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
+  const blogQuery = new QueryBuilder(BlogModel.find().populate('author'), query)
+    .search(blogSearchableField)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await blogQuery.modelQuery;
+  return result;
 };
 
 const updateBlogIntoDB = async (
@@ -95,4 +109,5 @@ export const BlogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
   deleteBlogFromDB,
+  getAllBlogsFromDB,
 };

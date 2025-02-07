@@ -1,4 +1,4 @@
-// import httpStatus from 'http-status';
+import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { RequestHandler } from 'express';
@@ -22,6 +22,17 @@ const createBlog: RequestHandler = catchAsync(async (req, res) => {
     statusCode: 201,
     success: true,
     message: 'Blog Created Successfully',
+    data: result,
+  });
+});
+
+const getAllBlogs: RequestHandler = catchAsync(async (req, res) => {
+  const result = await BlogServices.getAllBlogsFromDB(req.query);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blogs retrieved successfully',
     data: result,
   });
 });
@@ -68,4 +79,9 @@ const deleteBlog: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-export const BlogControllers = { createBlog, updateBlog, deleteBlog };
+export const BlogControllers = {
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  getAllBlogs,
+};

@@ -22,6 +22,6 @@ router.patch(
 
 router.delete('/:id', AuthValidationMiddleware(), BlogControllers.deleteBlog);
 
-// router.get('/:id', userControllers.getSingleUser);
+router.get('/', BlogControllers.getAllBlogs);
 
 export const BlogRoutes = router;
