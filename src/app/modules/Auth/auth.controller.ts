@@ -22,7 +22,7 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
 
-  const { accessToken, refreshToken, needsPasswordChange } = result;
+  const { accessToken, refreshToken } = result;
 
   res.cookie('refreshToken', refreshToken, {
     secure: config.NODE_ENV === 'production',
@@ -33,23 +33,10 @@ const loginUser = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User Successfully Logged In!',
-    data: { accessToken, needsPasswordChange },
+    data: { accessToken, },
   });
 });
 
-const changePassword = catchAsync(async (req, res) => {
-  const user = req.user;
-  const { ...passwordData } = req.body;
-
-  const result = await AuthServices.changePassword(user, passwordData);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Password Successfully Changed!',
-    data: result,
-  });
-});
 
 const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
@@ -67,5 +54,4 @@ export const AuthControllers = {
   loginUser,
   createUser,
   refreshToken,
-  changePassword,
 };
