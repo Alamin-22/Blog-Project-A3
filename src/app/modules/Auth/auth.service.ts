@@ -37,8 +37,6 @@ const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
   const user = await UserModel.findOne({ email: payload.email });
 
-  console.log('retrieve specific user', user);
-
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
@@ -58,7 +56,7 @@ const loginUser = async (payload: TLoginUser) => {
   );
 
   if (!isCorrectPassword)
-    throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Password do not matched');
 
   //create token and sent to the  client
 
