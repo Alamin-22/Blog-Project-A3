@@ -60,6 +60,7 @@ const updateBlogIntoDB = async (
 
   // Save the updated blog document
   const updatedBlog = await blog.save();
+
   return {
     _id: updatedBlog._id,
     title: updatedBlog.title,
@@ -67,7 +68,31 @@ const updateBlogIntoDB = async (
     author: updatedBlog.author,
   };
 };
+
+const deleteBlogFromDB = async (blogId: string, userId: ObjectId) => {
+  // Find the blog by its ID
+  const blog = await BlogModel.findById(blogId);
+  if (!blog) {
+    throw new AppError(404, 'Blog not found');
+  }
+
+  const blogAuthorId =
+    typeof blog.author === 'object' && blog.author._id
+      ? blog.author._id
+      : blog.author;
+
+  // Check if the logged in user is the author of the blog
+  if (blogAuthorId.toString() !== userId.toString()) {
+    throw new AppError(403, 'You are not authorized to delete this blog');
+  }
+
+  // Delete the blog from the database
+  await blog.deleteOne();
+  return null;
+};
+
 export const BlogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
+  deleteBlogFromDB,
 };
