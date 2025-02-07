@@ -17,9 +17,46 @@ const createBlogIntoDB = async (payload: TBlog, userId: ObjectId) => {
 
   // Populating the author field before returning
   const populatedBlog = await createdBlog.populate('author', 'name email'); // Populate only selected fields
-  return populatedBlog;
+
+  // returning only selected filed to the api Response
+  return {
+    _id: populatedBlog._id,
+    title: populatedBlog.title,
+    content: populatedBlog.content,
+    author: populatedBlog.author,
+  };
+};
+
+const updateBlogIntoDB = async (
+  blogId: string,
+  updatedData: { title: string; content: string },
+  userId: ObjectId,
+) => {
+  // Find the blog by ID
+  const blog = await BlogModel.findById(blogId);
+
+  console.log('getting the blog using id', blog);
+
+  if (!blog) {
+    throw new AppError(404, 'Blog not found');
+  }
+
+  // Check if the logged-in user is the author of the blog
+  if (blog.author._id.toString() !== userId.toString()) {
+    throw new AppError(403, 'You are not authorized to update this blog');
+  }
+
+  // Update the blog with the new title and content
+  blog.title = updatedData.title;
+  blog.content = updatedData.content;
+
+  // Save the updated blog
+  const updatedBlog = await blog.save();
+
+  return updatedBlog;
 };
 
 export const BlogServices = {
   createBlogIntoDB,
+  updateBlogIntoDB,
 };

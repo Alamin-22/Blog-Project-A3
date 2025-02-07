@@ -26,4 +26,29 @@ const createBlog: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-export const BlogControllers = { createBlog };
+const updateBlog: RequestHandler = catchAsync(async (req, res) => {
+  const { id: blogId } = req.params;
+  const { title, content } = req.body;
+
+  // Extract userId from the decoded JWT token from Authorization header in request
+  const userId = req.user.userId;
+
+  console.log('User ID decoded from token:', userId);
+
+  // Pass the blog ID, updated data, and user ID to the Blog service for update
+  const result = await BlogServices.updateBlogIntoDB(
+    blogId,
+    { title, content },
+    userId,
+  );
+
+  // Send the response using a reusable function
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Blog updated successfully',
+    data: result,
+  });
+});
+
+export const BlogControllers = { createBlog, updateBlog };

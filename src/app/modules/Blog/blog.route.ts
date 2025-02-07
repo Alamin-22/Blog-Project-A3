@@ -12,6 +12,12 @@ router.post(
   ValidateRequestMiddleWare(BlogValidations.createBlogValidationSchema),
   BlogControllers.createBlog,
 );
+router.post(
+  '/:id',
+  AuthValidationMiddleware(),
+  ValidateRequestMiddleWare(BlogValidations.updateBlogValidationSchema),
+  BlogControllers.createBlog,
+);
 
 // router.get('/:id', userControllers.getSingleUser);
 
