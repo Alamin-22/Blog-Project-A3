@@ -3,6 +3,7 @@ import { BlogControllers } from './blog.controller';
 import ValidateRequestMiddleWare from '../../middlewares/validateRequest';
 import { BlogValidations } from './blog.validation';
 import AuthValidationMiddleware from '../../middlewares/authRequest';
+import { USER_ROLE } from '../Auth/auth.constant';
 
 const router = express.Router();
 
@@ -20,7 +21,11 @@ router.patch(
   BlogControllers.updateBlog,
 );
 
-router.delete('/:id', AuthValidationMiddleware(), BlogControllers.deleteBlog);
+router.delete(
+  '/:id',
+  AuthValidationMiddleware(USER_ROLE.user, USER_ROLE.admin),
+  BlogControllers.deleteBlog,
+);
 
 router.get('/', BlogControllers.getAllBlogs);
 

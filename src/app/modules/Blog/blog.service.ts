@@ -83,7 +83,11 @@ const updateBlogIntoDB = async (
   };
 };
 
-const deleteBlogFromDB = async (blogId: string, userId: ObjectId) => {
+const deleteBlogFromDB = async (
+  blogId: string,
+  userId: ObjectId,
+  userRole: string,
+) => {
   // Find the blog by its ID
   const blog = await BlogModel.findById(blogId);
   if (!blog) {
@@ -95,8 +99,8 @@ const deleteBlogFromDB = async (blogId: string, userId: ObjectId) => {
       ? blog.author._id
       : blog.author;
 
-  // Check if the logged in user is the author of the blog
-  if (blogAuthorId.toString() !== userId.toString()) {
+  // Allow the author or an admin to delete the blog
+  if (blogAuthorId.toString() !== userId.toString() && userRole !== 'admin') {
     throw new AppError(403, 'You are not authorized to delete this blog');
   }
 

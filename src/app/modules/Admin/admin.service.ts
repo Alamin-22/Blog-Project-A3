@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 import { UserModel } from '../User/user.model';
 
 const blockUser = async (userId: string) => {
-  
   const user = await UserModel.findById(userId);
 
   if (!user) {
@@ -17,11 +16,7 @@ const blockUser = async (userId: string) => {
   user.isBlocked = true;
   await user.save();
 
-  return {
-    success: true,
-    message: 'User blocked successfully',
-    statusCode: 200,
-  };
+  return null;
 };
 
 export const AdminService = {

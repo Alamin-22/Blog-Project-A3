@@ -62,13 +62,12 @@ const updateBlog: RequestHandler = catchAsync(async (req, res) => {
 
 const deleteBlog: RequestHandler = catchAsync(async (req, res) => {
   const { id: blogId } = req.params;
-
   // Extract userId from the decoded JWT token
   const userId = req.user?._id;
-  console.log('User ID decoded from token:', userId);
+  const userRole = req.user?.role;
 
   // Delete the blog using the service function
-  const result = await BlogServices.deleteBlogFromDB(blogId, userId);
+  const result = await BlogServices.deleteBlogFromDB(blogId, userId, userRole);
 
   // Send a successful response
   sendResponse(res, {
