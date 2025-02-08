@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { UserModel } from '../User/user.model';
 
 const blockUser = async (userId: string) => {
+  
   const user = await UserModel.findById(userId);
 
   if (!user) {
