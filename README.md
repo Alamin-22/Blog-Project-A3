@@ -1,39 +1,173 @@
-``
-project-root
+# Story Sync Blog Server - Backend
+
+## Overview
+
+This is a professional backend project built with **TypeScript**, **Express.js**, **Mongoose**, and **Zod**. The project follows a modular design pattern to ensure scalability, maintainability, and clean code.
+
+---
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** (latest stable version)
+- **npm** or **yarn**
+- **MongoDB** (local or cloud instance)
+- **TypeScript** as a development dependency
+
+---
+
+## Installation
+
+### Step 1: Clone the Repository
+
+```bash
+git clone <repository_url>
+cd story_sync_blog2
+```
+
+### Step 2: Install Dependencies
+
+```bash
+# Install runtime dependencies
+npm install express mongoose dotenv cors zod bcrypt cookie-parser http-status jsonwebtoken
+
+# Install development dependencies
+npm install -D typescript ts-node-dev @types/node @types/express @types/jsonwebtoken @types/bcrypt eslint prettier
+```
+
+---
+
+## Project Structure
+
+```
+story_sync_blog2/
 ├── src/
-│   ├── app.ts           // Initializes middleware, routes, etc.
-│   ├── server.ts        // Bootstraps the server (e.g., connecting to DB, listening on a port)
-│   ├── config/
-│   │   └── index.ts     // Holds configuration (e.g., DB URI, port, JWT secret)
-│   ├── modules/
-│   │   ├── auth/
-│   │   │   ├── auth.interface.ts      // Interfaces/types for authentication
-│   │   │   ├── auth.controller.ts     // Handlers for /register and /login
-│   │   │   ├── auth.route.ts          // Express routes for authentication
-│   │   │   ├── auth.validation.ts     // Request payload validations (e.g., using Zod/Joi)
-│   │   │   └── auth.service.ts        // Business logic for auth (e.g., token generation, password hashing)
-│   │   ├── blog/
-│   │   │   ├── blog.interface.ts      // Interfaces/types for blog posts
-│   │   │   ├── blog.model.ts          // Mongoose schema and model for blogs
-│   │   │   ├── blog.controller.ts     // Handlers for blog CRUD operations
-│   │   │   ├── blog.route.ts          // Express routes for blog endpoints (public and protected)
-│   │   │   ├── blog.validation.ts     // Request validations for creating/updating blogs
-│   │   │   └── blog.service.ts        // Business logic for blog operations (e.g., searching, filtering)
-│   │   ├── user/
-│   │   │   ├── user.interface.ts      // Interfaces/types for user data
-│   │   │   ├── user.model.ts          // Mongoose schema and model for users
-│   │   │   ├── user.controller.ts     // Handlers for user-specific actions (if needed)
-│   │   │   ├── user.route.ts          // Express routes for user-related endpoints
-│   │   │   ├── user.validation.ts     // Validations for user updates, etc.
-│   │   │   └── user.service.ts        // Business logic for user operations (e.g., blocking a user)
-│   │   └── admin/
-│   │       ├── admin.controller.ts    // Admin-specific actions (e.g., blocking users, deleting any blog)
-│   │       ├── admin.route.ts         // Express routes for admin actions
-│   │       └── admin.validation.ts    // Validations for admin actions if needed
+│   ├── app/
+│   │   ├── middlewares/
+│   │   ├── modules/
+│   │   │   ├── Admin/
+│   │   │   │   ├── admin.controller.ts
+│   │   │   │   ├── admin.route.ts
+│   │   │   │   ├── admin.service.ts
+│   │   │   ├── Auth/
+│   │   │   │   ├── auth.constant.ts
+│   │   │   │   ├── auth.controller.ts
+│   │   │   │   ├── auth.interface.ts
+│   │   │   │   ├── auth.route.ts
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── auth.utils.ts
+│   │   │   │   ├── auth.validation.ts
+│   │   │   ├── Blog/
+│   │   │   │   ├── blog.constant.ts
+│   │   │   │   ├── blog.controller.ts
+│   │   │   │   ├── blog.interface.ts
+│   │   │   │   ├── blog.model.ts
+│   │   │   │   ├── blog.route.ts
+│   │   │   │   ├── blog.service.ts
+│   │   │   │   ├── blog.validation.ts
+│   │   │   ├── User/
+│   │   │   │   ├── user.constant.ts
+│   │   │   │   ├── user.controller.ts
+│   │   │   │   ├── user.interface.ts
+│   │   │   │   ├── user.model.ts
+│   │   │   │   ├── user.route.ts
+│   │   │   │   ├── user.service.ts
+│   │   │   │   ├── user.validation.ts
+│   │   ├── routers/
+│   │   │   ├── index.ts
+│   │   ├── utils/
+│   │   │   ├── catchAsync.ts
+│   │   │   ├── sendResponse.ts
+│   ├── app.ts
+│   ├── server.ts
 ├── .env
 ├── package.json
 ├── tsconfig.json
 ├── .eslintrc.json
 ├── .prettierrc
-└── README.md
-``
+├── README.md
+```
+
+---
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file in the project root and add the following:
+
+```ini
+PORT=5000
+DATABASE_URL=mongodb://localhost:27017/story_sync_blog
+JWT_SECRET=your_jwt_secret
+```
+
+---
+
+## Running the Project
+
+### Start the Development Server
+
+```bash
+npm run start:dev
+```
+
+### Start the Production Server
+
+```bash
+npm run start:prod
+```
+
+---
+
+## API Routes
+
+### Authentication (Auth Module)
+
+- **POST** `/api/auth/signup` - Register a new user
+- **POST** `/api/auth/login` - User login
+
+### User Management
+
+- **GET** `/api/users` - Get all users
+- **GET** `/api/users/:id` - Get user by ID
+- **PATCH** `/api/users/:id` - Update user
+- **DELETE** `/api/users/:id` - Delete user
+
+---
+
+## Code Quality & Formatting
+
+### Linting & Formatting
+
+```bash
+npm run lint      # Check lint errors
+npm run lint:fix  # Fix lint errors
+```
+
+---
+
+## Scripts in `package.json`
+
+```json
+"scripts": {
+  "start:prod": "node ./dist/server.js",
+  "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+  "lint": "eslint src/**/*.ts",
+  "lint:fix": "eslint src/**/*.ts --fix"
+}
+```
+
+---
+
+## License
+
+This project is licensed under the ISC License.
+
+---
+
+## Author
+
+Developed by Md. Al Amin Mollik.
+
