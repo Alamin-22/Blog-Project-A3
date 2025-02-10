@@ -6,6 +6,9 @@ This is a professional backend project built with **TypeScript**, **Express.js**
 
 ---
 
+🔗 Live API URL: [ https://story-sync-blog-server.vercel.app ]
+
+
 ## Prerequisites
 
 Make sure you have the following installed:
@@ -118,24 +121,6 @@ npm run start:dev
 ```bash
 npm run start:prod
 ```
-
----
-
-## API Routes
-
-### Authentication (Auth Module)
-
-- **POST** `/api/auth/signup` - Register a new user
-- **POST** `/api/auth/login` - User login
-
-### User Management
-
-- **GET** `/api/users` - Get all users
-- **GET** `/api/users/:id` - Get user by ID
-- **PATCH** `/api/users/:id` - Update user
-- **DELETE** `/api/users/:id` - Delete user
-
----
 
 ## Code Quality & Formatting
 
